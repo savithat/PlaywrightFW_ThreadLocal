@@ -51,6 +51,17 @@ jobs:
           npm install -g allure-commandline
           allure generate allure-results --clean -o allure-report
 
+      - name: Upload All HTML Reports as Artifact
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: all-test-reports
+          if-no-files-found: ignore
+          path: |
+            allure-report/
+            target/surefire-reports/
+            build/
+
       - name: Upload Allure Report for GitHub Pages
         if: always()
         uses: actions/upload-pages-artifact@v3
