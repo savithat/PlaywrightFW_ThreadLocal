@@ -48,6 +48,7 @@ public class PlaywrightFactory {
 	//	playwright = Playwright.create();
 		tLocalPlaywright.set(Playwright.create());
 		
+		boolean isHeadless = Boolean.parseBoolean(System.getProperty("headless", "false"));
 		String browserName = prop.getProperty("browser").toLowerCase().trim();
 		System.out.println("Browser: "+ prop.getProperty("browser"));
 		
@@ -55,25 +56,25 @@ public class PlaywrightFactory {
 		case "chromium": {
 	//		browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
 	//		tLocalbrowser.set(playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)));
-			tLocalbrowser.set(getPlaywright().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)));	
+			tLocalbrowser.set(getPlaywright().chromium().launch(new BrowserType.LaunchOptions().setHeadless(isHeadless)));	
 			break;
 		}
 		case "firefox": {
 	//		browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
 	//		tLocalbrowser.set(playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false)));
-			tLocalbrowser.set(getPlaywright().firefox().launch(new BrowserType.LaunchOptions().setHeadless(false)));
+			tLocalbrowser.set(getPlaywright().firefox().launch(new BrowserType.LaunchOptions().setHeadless(isHeadless)));
 			break;
 		}
 		case "chrome": {
 	//		browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
 		//	tLocalbrowser.set(playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false)));
-			tLocalbrowser.set(getPlaywright().chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false)));
+			tLocalbrowser.set(getPlaywright().chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(isHeadless)));
 			break;
 		}
 		case "safari": {
 	//		browser = playwright.webkit().launch(new BrowserType.LaunchOptions().setHeadless(false));
 // 	tLocalbrowser.set(playwright.webkit().launch(new BrowserType.LaunchOptions().setHeadless(false)));
-			tLocalbrowser.set(getPlaywright().webkit().launch(new BrowserType.LaunchOptions().setHeadless(false)));
+			tLocalbrowser.set(getPlaywright().webkit().launch(new BrowserType.LaunchOptions().setHeadless(isHeadless)));
 			break;
 		}
 		
