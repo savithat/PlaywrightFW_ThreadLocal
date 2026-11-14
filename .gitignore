@@ -1,0 +1,23 @@
+# Maven build directory
+target/
+
+# Allure reports & raw results
+allure-results/
+allure-report/
+
+# Eclipse IDE files
+.settings/
+.classpath
+.project
+.metadata/
+.allure
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+*.peg
+test-output/
