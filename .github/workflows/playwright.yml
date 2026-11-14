@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -26,13 +26,13 @@ jobs:
         run: mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"
 
       - name: Run Playwright Tests
-        run: mvn clean test
+        run: mvn clean test -Dheadless=true
 
       - name: Generate Allure Report
         if: always()
         run: |
-          wget -qO- https://github.com | tar -xz -C /opt/
-          /opt/allure-2.32.0/bin/allure generate allure-results --clean -o allure-report
+          wget -qO- https://github.com | tar -xz
+          ./allure-2.32.0/bin/allure generate allure-results --clean -o allure-report
 
       - name: Upload Allure Report
         if: always()
