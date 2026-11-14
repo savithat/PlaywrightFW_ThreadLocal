@@ -1,9 +1,9 @@
 package com.qa.opencart.pages;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.AriaRole;
 import com.qa.opencart.utilities.ElementUtil;
+
+import io.qameta.allure.Step;
 
 public class HomePage {
 
@@ -26,6 +26,7 @@ public class HomePage {
 	}
 
 	// methods
+	@Step("Get ")
 	public String getHomePageTitle() {
 		return elementUtil.getPageTitle();
 	}
