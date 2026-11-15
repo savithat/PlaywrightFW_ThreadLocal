@@ -6,6 +6,17 @@ on:
   pull_request:
     branches: [ main, master ]
   workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Select browser (leave default to use testng_regression.xml)'
+        required: true
+        default: 'default'
+        type: choice
+        options:
+          - default
+          - chromium
+          - firefox
+          - safari
 
 permissions:
   contents: read
@@ -15,6 +26,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-24.04
+	environment: qa   # <-- Replace 'qa' with the exact Environment name you created on GitHub
 
     steps:
       - name: Checkout code
@@ -43,7 +55,17 @@ jobs:
         run: mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
 
       - name: Run Playwright Tests
-        run: mvn clean test -Dheadless=true
+        env:
+          APP_URL: ${{ vars.URL }}
+          APP_USERNAME: ${{ secrets.USERNAME }}
+          APP_PASSWORD: ${{ secrets.PASSWORD }}
+          HEADLESS: "true"
+        run: |
+          if [ "${{ github.event.inputs.browser }}" != "" ] && [ "${{ github.event.inputs.browser }}" != "default" ]; then
+            mvn clean test -Dheadless=true -DbrowserName=${{ github.event.inputs.browser }}
+          else
+            mvn clean test -Dheadless=true
+          fi
 
       - name: Generate Allure Report
         if: always()

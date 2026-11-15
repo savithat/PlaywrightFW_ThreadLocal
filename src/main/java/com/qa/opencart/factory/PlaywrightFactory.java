@@ -96,23 +96,58 @@ public class PlaywrightFactory {
 	}
 	
 	//read from preoperties class
+//	public Properties intitProperty() {
+//		
+//		Properties prop = null;
+//		try {
+//		File file = new File("./src/test/resources/config/config.properties");
+//		FileInputStream fip = new FileInputStream(file);
+//		
+//		prop = new Properties();	
+//		prop.load(fip);
+//		} catch (FileNotFoundException e) {	
+//			e.printStackTrace();
+//		}catch (IOException e) {	
+//			e.printStackTrace();
+//		}
+//		
+//		return prop;
+//	}
+	
+	
+	
+	// read from properties class and override with GitHub Secrets (Environment Variables) if present
 	public Properties intitProperty() {
-		
-		Properties prop = null;
+
+		Properties prop = new Properties();
 		try {
-		File file = new File("./src/test/resources/config/config.properties");
-		FileInputStream fip = new FileInputStream(file);
-		
-		prop = new Properties();	
-		prop.load(fip);
-		} catch (FileNotFoundException e) {	
-			e.printStackTrace();
-		}catch (IOException e) {	
+			File file = new File("./src/test/resources/config/config.properties");
+			if (file.exists()) {
+				FileInputStream fip = new FileInputStream(file);
+				prop.load(fip);
+			}
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
+		// Override with GitHub Secrets / Environment Variables when running in CI
+		overrideFromEnv(prop, "APP_URL", "url");
+		overrideFromEnv(prop, "APP_USERNAME", "username");
+		overrideFromEnv(prop, "APP_PASSWORD", "password");
+		overrideFromEnv(prop, "BROWSER", "browser");
+		overrideFromEnv(prop, "HEADLESS", "headless");
+
 		return prop;
 	}
+
+	
+	private void overrideFromEnv(Properties prop, String envKey, String propKey) {
+		String envVal = System.getenv(envKey);
+		if (envVal != null && !envVal.trim().isEmpty()) {
+			prop.setProperty(propKey, envVal.trim());
+		}
+	}
+
 	
 	
 	public static byte[] attachScreenshot() {

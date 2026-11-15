@@ -12,6 +12,10 @@ allure-report/
 .metadata/
 .allure
 
+#preopert files
+config*.properties
+!config.example.properties
+
 # OS generated files
 .DS_Store
 Thumbs.db
