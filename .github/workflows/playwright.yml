@@ -7,6 +7,15 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
     inputs:
+      env:
+        description: 'Select Environment'
+        required: true
+        default: 'qa'
+        type: choice
+        options:
+          - qa
+          - dev
+          - stage
       browser:
         description: 'Select browser (leave default to use testng_regression.xml)'
         required: true
@@ -26,7 +35,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-24.04
-    environment: qa
+    environment: ${{ github.event.inputs.env || 'qa' }}
 
     steps:
       - name: Checkout code
